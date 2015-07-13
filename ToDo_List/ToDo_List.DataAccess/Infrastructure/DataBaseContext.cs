@@ -10,7 +10,7 @@ namespace ToDo_List.DataAccess.Infrastructure
     public class DataBaseContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<MyTask> Tasks { get; set; }
         public DbSet<Subtask> Subtasks { get; set; }
     }
 }

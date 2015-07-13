@@ -11,10 +11,10 @@ namespace ToDo_List.DataAccess.Entities
     {
         //[DisplayName("Category")]
         public string Text { get; set; }
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<MyTask> Tasks { get; set; }
         public Category()
         {
-            Tasks = new List<Task>();
+            Tasks = new List<MyTask>();
         }
     }
 }

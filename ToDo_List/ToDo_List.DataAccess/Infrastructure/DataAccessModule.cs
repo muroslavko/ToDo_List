@@ -22,7 +22,7 @@ namespace ToDo_List.DataAccess.Infrastructure
 
 
             Bind<IRepository<Category>>().To<CategoryRepository>();
-            Bind<IRepository<Task>>().To<TaskRepository>();
+            Bind<IRepository<MyTask>>().To<MyTaskRepository>();
             Bind<IRepository<Subtask>>().To<SubtaskRepository>();
 
         }

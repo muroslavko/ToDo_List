@@ -7,7 +7,7 @@ using ToDo_List.DataAccess.Infrastructure;
 
 namespace ToDo_List.DataAccess.Entities
 {
-    public class Task : BaseEntity
+    public class MyTask : BaseEntity
     {
         public DateTime Date { get; set; }
         //[DisplayName("Name")]
@@ -17,7 +17,7 @@ namespace ToDo_List.DataAccess.Entities
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<Subtask> Subtasks { get; set; }
-        public Task()
+        public MyTask()
         {
             Subtasks = new List<Subtask>();
         }
