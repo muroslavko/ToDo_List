@@ -17,6 +17,24 @@ namespace ToDo_List.Services.Concrete
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
+
+        public List<MyTask> GetMyTasks()
+        {
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                return unitOfWork.GetRepository<MyTask>().GetAll().ToList();
+            }
+        }
+
+        public void CreateMyTask(MyTask task)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                unitOfWork.GetRepository<MyTask>().AddItem(task);
+                unitOfWork.Commit();
+            }
+        }
+
         public MyTask ChangeStateOfTask(int id)
         {
             using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())

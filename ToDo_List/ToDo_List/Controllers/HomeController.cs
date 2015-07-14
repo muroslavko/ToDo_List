@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Ninject;
 using ToDo_List.DataAccess.Entities;
 using ToDo_List.DataAccess.Infrastructure;
+using ToDo_List.Services.Concrete;
 using ToDo_List.Services.Interfaces;
 
 namespace ToDo_List.Controllers
@@ -15,17 +16,18 @@ namespace ToDo_List.Controllers
     {
         //[Inject]
         //private readonly IRepository<Category> _repositoryCategory;
-        //private readonly ITaskService _taskService;
+        private readonly ITaskService _taskService = MvcApplication.Container.Get<TaskService>();
 
-        //public HomeController(ITaskService taskService)//IRepository<Category> repositoryCategory)
-        //{
-        //    //_repositoryCategory = repositoryCategory;
-        //    _taskService = taskService;
-        //}
+        public HomeController()//ITaskService taskService)//IRepository<Category> repositoryCategory)
+        {
+            //_repositoryCategory = repositoryCategory;
+            //_taskService = taskService;
+            //_taskService = MvcApplication.Container.Get<TaskService>();
+        }
         public ActionResult Index()
         {
-            
-            return View();
+            var item = _taskService.GetMyTasks();
+            return View(item);
         }
 
         public ActionResult About()

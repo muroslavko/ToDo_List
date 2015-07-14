@@ -1,4 +1,4 @@
-﻿@*@Model ToDo_List.DataAccess.Entities.Category*@
+﻿@model IEnumerable<ToDo_List.DataAccess.Entities.MyTask>
 @{
     ViewBag.Title = "Home Page";
 }
@@ -33,10 +33,9 @@
         </p>
     </div>
 </div>
-
-@*<ol>
+<ol>
     @foreach (var col in Model)
     {
         <li>@col.Text</li>
     }
-</ol>*@
+</ol>
