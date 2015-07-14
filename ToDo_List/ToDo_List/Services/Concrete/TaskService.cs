@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Web;
+using System.Web.UI.WebControls;
+using Microsoft.Ajax.Utilities;
 using ToDo_List.DataAccess.Entities;
 using ToDo_List.DataAccess.Infrastructure;
+using ToDo_List.Infrastructure.Exceptions;
 using ToDo_List.Services.Interfaces;
 
 namespace ToDo_List.Services.Concrete
@@ -28,6 +32,10 @@ namespace ToDo_List.Services.Concrete
 
         public void CreateMyTask(MyTask task)
         {
+            if (task.Text == String.Empty)
+            {
+                throw new BadParametersException("Missed a name");
+            }
             using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
             {
                 unitOfWork.GetRepository<MyTask>().AddItem(task);
@@ -35,18 +43,91 @@ namespace ToDo_List.Services.Concrete
             }
         }
 
-        public MyTask ChangeStateOfTask(int id)
+        public void RemoveMyTask(int id)
         {
             using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
             {
-                var task = unitOfWork.GetRepository<MyTask>().Get(id);
-                task.Complete = true;
-                unitOfWork.GetRepository<MyTask>().UpdateItem(task);
+                var _mytaskRepository = unitOfWork.GetRepository<MyTask>();
+                var task = _mytaskRepository.GetOne(x => x.Id == id);
+
+                if (task == null)
+                {
+                    throw new InstanceNotFoundException("Task with specified id does not exist");
+                }
+
+                _mytaskRepository.DeleteItem(task);
                 unitOfWork.Commit();
+            }
+        }
+
+        public MyTask GetMyTaskById(int id)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                var _mytaskRepository = unitOfWork.GetRepository<MyTask>();
+                var task = _mytaskRepository.GetOne(x => x.Id == id);
+
+                if (task == null)
+                {
+                    throw new InstanceNotFoundException("Task with specified id does not exist");
+                }
+
                 return task;
             }
         }
 
+        public void SetMyTaskName(int id, string name)
+        {
+            if (name == String.Empty)
+            {
+                throw new BadParametersException("Missed a name");
+            }
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                var _mytaskRepository = unitOfWork.GetRepository<MyTask>();
+                var task = _mytaskRepository.GetOne(x => x.Id == id);
+
+                if (task == null)
+                {
+                    throw new InstanceNotFoundException("Task with specified id does not exist");
+                }
+                task.Text = name;
+                _mytaskRepository.UpdateItem(task);
+                unitOfWork.Commit();
+            }
+        }
+
+        public void DeleteAllDone(int id)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                var _taskRepository = unitOfWork.GetRepository<MyTask>();
+                List<MyTask> tasks = unitOfWork.GetRepository<Category>().GetOne(x => x.Id == id).Tasks.ToList();
+                foreach (var task in tasks)
+                {
+                    _taskRepository.DeleteItem(task);
+                }
+                unitOfWork.Commit();
+            }
+        }
+
+        public void ChangeStateOfTask(int id)
+        {
+
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                var _mytaskRepository = unitOfWork.GetRepository<MyTask>();
+                var task = _mytaskRepository.GetOne(x => x.Id == id);
+                if (task == null)
+                {
+                    throw new InstanceNotFoundException("Task with specified id does not exist");
+                }
+                task.Complete = task.Subtasks.Count(x => x.Complete == false) == 0;
+                _mytaskRepository.UpdateItem(task);
+                unitOfWork.Commit();
+            }
+        }
+        
 
     }
 }

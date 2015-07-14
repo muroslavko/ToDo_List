@@ -13,6 +13,8 @@ namespace ToDo_List.Infrastructure.Concrete
         public override void Load()
         {
             Bind<ITaskService>().To<TaskService>();
+            Bind<ISubtaskService>().To<SubtaskService>();
+            Bind<ICategoryService>().To<CategoryService>();
         }
     }
 }
