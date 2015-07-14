@@ -8,8 +8,14 @@ namespace ToDo_List.Services.Interfaces
 {
     public interface ITaskService
     {
+
         List<MyTask> GetMyTasks();
-        //void CreateMyTask(MyTask task);
-        //MyTask ChangeStateOfTask(int id);
+        void CreateMyTask(MyTask task);
+        void RemoveMyTask(int id);
+        MyTask GetMyTaskById(int id);
+        void SetMyTaskName(int id, string name);
+        void DeleteAllDone(int id);
+        void ChangeStateOfTask(int id);
+
     }
 }
