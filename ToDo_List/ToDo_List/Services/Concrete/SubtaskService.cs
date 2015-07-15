@@ -95,6 +95,36 @@ namespace ToDo_List.Services.Concrete
             }
         }
 
+        public void SetSubtaskState(int[] id, bool[] status)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                var _subtaskRepository = unitOfWork.GetRepository<Subtask>();
+                for (int i = 0; i < id.Count(); i++)
+                {
+                    var subtask = _subtaskRepository.GetOne(x => x.Id == id[i]);
+                    subtask.Complete = status[i];
+                    _subtaskRepository.UpdateItem(subtask);
+                }
+                unitOfWork.Commit();
+            }
+        }
 
+        public void ChangeStateOfTask(int id)
+        {
+
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                var _mytaskRepository = unitOfWork.GetRepository<MyTask>();
+                var task = _mytaskRepository.GetOne(x => x.Id == id);
+                if (task == null)
+                {
+                    throw new InstanceNotFoundException("Task with specified id does not exist");
+                }
+                task.Complete = task.Subtasks.Count(x => x.Complete == false) == 0;
+                _mytaskRepository.UpdateItem(task);
+                unitOfWork.Commit();
+            }
+        }
     }
 }

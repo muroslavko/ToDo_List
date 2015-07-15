@@ -102,7 +102,8 @@ namespace ToDo_List.Services.Concrete
             using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
             {
                 var _taskRepository = unitOfWork.GetRepository<MyTask>();
-                List<MyTask> tasks = unitOfWork.GetRepository<Category>().GetOne(x => x.Id == id).Tasks.ToList();
+                List<MyTask> tasks = unitOfWork.GetRepository<Category>().GetOne(x => x.Id == id)
+                    .Tasks.Where(x=>x.Complete == true).ToList();
                 foreach (var task in tasks)
                 {
                     _taskRepository.DeleteItem(task);
@@ -111,23 +112,29 @@ namespace ToDo_List.Services.Concrete
             }
         }
 
-        public void ChangeStateOfTask(int id)
+        public void ChangeStateOfTask(IEnumerable<MyTask> tasks)
         {
 
             using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
             {
                 var _mytaskRepository = unitOfWork.GetRepository<MyTask>();
-                var task = _mytaskRepository.GetOne(x => x.Id == id);
-                if (task == null)
+                foreach (var item in tasks)
                 {
-                    throw new InstanceNotFoundException("Task with specified id does not exist");
+                    var task = _mytaskRepository.GetOne(x => x.Id == item.Id);
+                    task.Complete = item.Complete;
+                    _mytaskRepository.UpdateItem(task);
                 }
-                task.Complete = task.Subtasks.Count(x => x.Complete == false) == 0;
-                _mytaskRepository.UpdateItem(task);
+                
                 unitOfWork.Commit();
             }
         }
-        
 
+        public IEnumerable<Category> GetCategorys()
+        {
+            using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
+            {
+                return unitOfWork.GetRepository<Category>().GetAll().ToList();
+            }
+        } 
     }
 }

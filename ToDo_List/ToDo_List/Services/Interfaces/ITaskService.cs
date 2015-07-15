@@ -15,7 +15,8 @@ namespace ToDo_List.Services.Interfaces
         MyTask GetMyTaskById(int id);
         void SetMyTaskName(int id, string name);
         void DeleteAllDone(int id);
-        void ChangeStateOfTask(int id);
+        void ChangeStateOfTask(IEnumerable<MyTask> tasks);
+        IEnumerable<Category> GetCategorys();
 
     }
 }

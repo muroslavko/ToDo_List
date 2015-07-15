@@ -1,0 +1,8 @@
+﻿@model ToDo_List.DataAccess.Entities.MyTask
+@Html.HiddenFor(x => x.CategoryId)
+
+<div>
+    @Html.LabelFor(x => x.Text, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(x => x.Text, new { htmlAttributes = new { @class = "form-control" } })
+</div>
+<input type="submit" value="Add Task" class="btn btn-default" />

@@ -1,4 +1,5 @@
 ﻿@using System.Linq
+@using ToDo_List.DataAccess.Entities
 @model System.Collections.Generic.IEnumerable<ToDo_List.DataAccess.Entities.Category>
 @{
     ViewBag.Title = "Index";
@@ -13,7 +14,7 @@
 <div id="listOfTaks">
     @if (Model.Count() != 0)
     {
-        @Html.Action("_GetForCategory", "TaskPartial", new { id = Model.First<test1.Models.Category>().Id })
+        @Html.Action("_GetForCategory", "TaskPartial", new { id = Model.First<Category>().Id })
     }
 </div>
 @section scripts{
