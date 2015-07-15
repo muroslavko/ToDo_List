@@ -31,7 +31,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpGet]
-        [Route("task")]
+        [Route("task/{id:int}")]
         public HttpResponseMessage GetSubtaskById(int id)
         {
             try
@@ -60,7 +60,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpPut]
-        [Route("edit")]
+        //[Route("edit/{id:int}/{name:string}")]
         public HttpResponseMessage PutSubtaskName(int id, string name)
         {
             try
@@ -79,7 +79,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("remove/{id:int}")]
         public HttpResponseMessage RemoveSubtask(int id)
         {
             try
@@ -98,7 +98,7 @@ namespace ToDo_List.ApiControlers
         [Route("changestate")]
         public HttpResponseMessage PutStateOfSubtask(IEnumerable<Subtask> subtasks)
         {
-            //_subtaskService.ChangeStateOfTask(tasks);
+            _subtaskService.SetSubtaskState(subtasks.Select(x => x.Id).ToArray(), subtasks.Select(x => x.Complete).ToArray());
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

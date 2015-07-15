@@ -2,6 +2,7 @@
 @model List<ToDo_List.DataAccess.Entities.MyTask>
 <div id="listOfTaks">
     <h1>List of Tasks</h1>
+    <div id="deleteDone"></div>
     @using (Html.BeginForm("ChangeStateOfTask", "Tasks", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
@@ -30,10 +31,12 @@
                     {
                         <input type="submit" value="Save" class="btn btn-default" />
 
-                        @Html.ActionLink("Delete all Done", "DeleteDone", "Tasks", new
-               {
-                   id = Model.First<MyTask>().CategoryId
-               }, new { })
+                        @*@Html.ActionLink("Delete all Done", "DeleteDone", "Tasks", new
+                            {
+                                id = Model.First<MyTask>().CategoryId
+                            }, new { })*@
+                        var id = Model.First<MyTask>().CategoryId;
+                        <a href='#' onclick="deleteAllDoneTasks(@id);">Delete all Done</a>
                     }
                 </td>
             </tr>

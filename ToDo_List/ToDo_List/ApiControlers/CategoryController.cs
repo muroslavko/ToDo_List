@@ -31,7 +31,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpGet]
-        [Route("category")]
+        [Route("category/{id:int}")]
         public HttpResponseMessage GetCategoryById(int id)
         {
             try
@@ -60,7 +60,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpPut]
-        [Route("edit")]
+        //[Route("edit/{id:int}/{name:string}")]
         public HttpResponseMessage PutCategoryName(int id, string name)
         {
             try
@@ -79,7 +79,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("remove/{id:int}")]
         public HttpResponseMessage RemoveTask(int id)
         {
             try

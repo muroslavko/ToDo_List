@@ -32,7 +32,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpGet]
-        [Route("task")]
+        [Route("task/{id:int}")]
         public HttpResponseMessage GetTaskById(int id)
         {
             try
@@ -61,7 +61,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpPut]
-        [Route("edit")]
+        //[Route("edit/{id:int}/{name:string}")]
         public HttpResponseMessage PutTaskName(int id, string name)
         {
             try
@@ -80,7 +80,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("remove/{id:int}")]
         public HttpResponseMessage RemoveTask(int id)
         {
             try
@@ -95,7 +95,7 @@ namespace ToDo_List.ApiControlers
         }
 
         [HttpDelete]
-        [Route("remove/done")]
+        [Route("removedone/{id:int}")]
         public HttpResponseMessage RemoveAllDoneTask(int id)
         {
             try

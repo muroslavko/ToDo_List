@@ -21,11 +21,7 @@ namespace ToDo_List.App_Start
 
         public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
-            //var nffds = MvcApplication.Container.Get<TaskService>();
-            //var item = nffds.GetMyTasks();
         }
         public static void Stop()
         {
@@ -37,9 +33,6 @@ namespace ToDo_List.App_Start
             var kernel = new StandardKernel();
             try
             {
-                kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
-                kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-
                 RegisterServices(kernel);
                 return kernel;
             }

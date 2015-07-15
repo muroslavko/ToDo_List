@@ -32,7 +32,7 @@ namespace ToDo_List.Services.Concrete
 
         public void CreateMyTask(MyTask task)
         {
-            if (task.Text == String.Empty)
+            if (task.Text.Count() == 0)
             {
                 throw new BadParametersException("Missed a name");
             }
