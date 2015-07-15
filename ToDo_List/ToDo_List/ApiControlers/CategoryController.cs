@@ -13,31 +13,30 @@ using ToDo_List.Services.Interfaces;
 
 namespace ToDo_List.ApiControlers
 {
-    [RoutePrefix("api/tasks")]
-    public class TaskController : ApiController
+    public class CategoryController : ApiController
     {
-        private ITaskService _taskService { get; set; }
+        private ICategoryService _categoryService { get; set; }
 
-        public TaskController()
+        public CategoryController()
         {
-            _taskService = MvcApplication.Container.Get<TaskService>();
+            _categoryService = MvcApplication.Container.Get<CategoryService>();
         }
         // GET: api/Task
         [HttpGet]
         [Route("all")]
-        public HttpResponseMessage GetAllTasks()
+        public HttpResponseMessage GetAllCategories()
         {
-            var data = _taskService.GetMyTasks();
+            var data = _categoryService.GetCategorys();
             return Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [HttpGet]
-        [Route("task")]
-        public HttpResponseMessage GetTaskById(int id)
+        [Route("category")]
+        public HttpResponseMessage GetCategoryById(int id)
         {
             try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, _taskService.GetMyTaskById(id));
+                return Request.CreateResponse(HttpStatusCode.OK, _categoryService.GetCategoryById(id));
             }
             catch (InstanceNotFoundException e)
             {
@@ -47,12 +46,12 @@ namespace ToDo_List.ApiControlers
 
         [HttpPost]
         [Route("create")]
-        public HttpResponseMessage CreateMyTask(MyTask task)
+        public HttpResponseMessage CreateCategory(Category category)
         {
             try
             {
-                _taskService.CreateMyTask(task);
-                return Request.CreateResponse(HttpStatusCode.OK, task);
+                _categoryService.CreateCategory(category);
+                return Request.CreateResponse(HttpStatusCode.OK, category);
             }
             catch (BadParametersException e)
             {
@@ -62,12 +61,12 @@ namespace ToDo_List.ApiControlers
 
         [HttpPut]
         [Route("edit")]
-        public HttpResponseMessage PutTaskName(int id, string name)
+        public HttpResponseMessage PutCategoryName(int id, string name)
         {
             try
             {
-                _taskService.SetMyTaskName(id, name);
-                return Request.CreateResponse(HttpStatusCode.OK, _taskService.GetMyTaskById(id));
+                _categoryService.SetCategoryName(id, name);
+                return Request.CreateResponse(HttpStatusCode.OK, _categoryService.GetCategoryById(id));
             }
             catch (BadParametersException e)
             {
@@ -85,7 +84,7 @@ namespace ToDo_List.ApiControlers
         {
             try
             {
-                _taskService.RemoveMyTask(id);
+                _categoryService.RemoveCategory(id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (InstanceNotFoundException e)
@@ -93,30 +92,5 @@ namespace ToDo_List.ApiControlers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, e);
             }
         }
-
-        [HttpDelete]
-        [Route("remove/done")]
-        public HttpResponseMessage RemoveAllDoneTask(int id)
-        {
-            try
-            {
-                _taskService.DeleteAllDone(id);
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            catch (InstanceNotFoundException e)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, e);
-            }
-        }
-
-        [HttpPut]
-        [Route("changestate")]
-        public HttpResponseMessage PutStateOfTask(IEnumerable<MyTask> tasks)
-        {
-            _taskService.ChangeStateOfTask(tasks);
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-
     }
 }

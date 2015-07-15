@@ -13,31 +13,30 @@ using ToDo_List.Services.Interfaces;
 
 namespace ToDo_List.ApiControlers
 {
-    [RoutePrefix("api/tasks")]
-    public class TaskController : ApiController
+    public class SubtaskController : ApiController
     {
-        private ITaskService _taskService { get; set; }
+                private ISubtaskService _subtaskService { get; set; }
 
-        public TaskController()
+                public SubtaskController()
         {
-            _taskService = MvcApplication.Container.Get<TaskService>();
+            _subtaskService = MvcApplication.Container.Get<SubtaskService>();
         }
         // GET: api/Task
         [HttpGet]
         [Route("all")]
-        public HttpResponseMessage GetAllTasks()
+        public HttpResponseMessage GetAllSubtask()
         {
-            var data = _taskService.GetMyTasks();
+            var data = _subtaskService.GetSubtask();
             return Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [HttpGet]
         [Route("task")]
-        public HttpResponseMessage GetTaskById(int id)
+        public HttpResponseMessage GetSubtaskById(int id)
         {
             try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, _taskService.GetMyTaskById(id));
+                return Request.CreateResponse(HttpStatusCode.OK, _subtaskService.GetSubtaskById(id));
             }
             catch (InstanceNotFoundException e)
             {
@@ -47,12 +46,12 @@ namespace ToDo_List.ApiControlers
 
         [HttpPost]
         [Route("create")]
-        public HttpResponseMessage CreateMyTask(MyTask task)
+        public HttpResponseMessage CreateSubtask(Subtask subtask)
         {
             try
             {
-                _taskService.CreateMyTask(task);
-                return Request.CreateResponse(HttpStatusCode.OK, task);
+                _subtaskService.CreateSubtask(subtask);
+                return Request.CreateResponse(HttpStatusCode.OK, subtask);
             }
             catch (BadParametersException e)
             {
@@ -62,12 +61,12 @@ namespace ToDo_List.ApiControlers
 
         [HttpPut]
         [Route("edit")]
-        public HttpResponseMessage PutTaskName(int id, string name)
+        public HttpResponseMessage PutSubtaskName(int id, string name)
         {
             try
             {
-                _taskService.SetMyTaskName(id, name);
-                return Request.CreateResponse(HttpStatusCode.OK, _taskService.GetMyTaskById(id));
+                _subtaskService.SetSubtaskName(id, name);
+                return Request.CreateResponse(HttpStatusCode.OK, _subtaskService.GetSubtaskById(id));
             }
             catch (BadParametersException e)
             {
@@ -81,11 +80,11 @@ namespace ToDo_List.ApiControlers
 
         [HttpDelete]
         [Route("remove")]
-        public HttpResponseMessage RemoveTask(int id)
+        public HttpResponseMessage RemoveSubtask(int id)
         {
             try
             {
-                _taskService.RemoveMyTask(id);
+                _subtaskService.RemoveSubtask(id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (InstanceNotFoundException e)
@@ -94,29 +93,13 @@ namespace ToDo_List.ApiControlers
             }
         }
 
-        [HttpDelete]
-        [Route("remove/done")]
-        public HttpResponseMessage RemoveAllDoneTask(int id)
-        {
-            try
-            {
-                _taskService.DeleteAllDone(id);
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            catch (InstanceNotFoundException e)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, e);
-            }
-        }
 
         [HttpPut]
         [Route("changestate")]
-        public HttpResponseMessage PutStateOfTask(IEnumerable<MyTask> tasks)
+        public HttpResponseMessage PutStateOfSubtask(IEnumerable<Subtask> subtasks)
         {
-            _taskService.ChangeStateOfTask(tasks);
+            //_subtaskService.ChangeStateOfTask(tasks);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
-
-
     }
 }

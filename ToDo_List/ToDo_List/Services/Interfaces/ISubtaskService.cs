@@ -16,6 +16,5 @@ namespace ToDo_List.Services.Interfaces
         Subtask GetSubtaskById(int id);
         void SetSubtaskName(int id, string name);
         void SetSubtaskState(int[] id, bool[] status);
-        void ChangeStateOfTask(int id);
     }
 }

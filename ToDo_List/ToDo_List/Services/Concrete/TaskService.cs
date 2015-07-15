@@ -101,9 +101,13 @@ namespace ToDo_List.Services.Concrete
         {
             using (var unitOfWork = _unitOfWorkFactory.NewUnitOfWork())
             {
+                var category = unitOfWork.GetRepository<Category>().GetOne(x => x.Id == id);
+                if (category == null)
+                {
+                    throw new InstanceNotFoundException("Category with specified id does not exist");
+                }
                 var _taskRepository = unitOfWork.GetRepository<MyTask>();
-                List<MyTask> tasks = unitOfWork.GetRepository<Category>().GetOne(x => x.Id == id)
-                    .Tasks.Where(x=>x.Complete == true).ToList();
+                List<MyTask> tasks = category.Tasks.Where(x => x.Complete).ToList();
                 foreach (var task in tasks)
                 {
                     _taskRepository.DeleteItem(task);

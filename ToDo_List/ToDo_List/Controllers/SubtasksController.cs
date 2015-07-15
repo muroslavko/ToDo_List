@@ -55,7 +55,6 @@ namespace ToDo_List.Controllers
         public ActionResult ChangeStateOfSubtask(IEnumerable<Subtask> subtask)
         {
             _subtaskService.SetSubtaskState(subtask.Select(x => x.Id).ToArray(), subtask.Select(x => x.Complete).ToArray());
-            _subtaskService.ChangeStateOfTask(subtask.FirstOrDefault().TaskId);
             return RedirectToAction("Details", "Tasks", new { id = subtask.FirstOrDefault().TaskId });
         }
         // GET: Tasks/Edit/5
